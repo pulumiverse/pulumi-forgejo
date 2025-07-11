@@ -15,3 +15,5 @@ Pulumi.*.yaml
 **/dist
 
 go.work.sum
+
+.envrc
