@@ -1,12 +1,12 @@
-PROJECT_NAME := Pulumi Xyz Resource Provider
+PROJECT_NAME := Pulumi Forgejo Resource Provider
 
 SHELL = /bin/bash
 
-PACK             := xyz
+PACK             := forgejo
 PACKDIR          := sdk
-PROJECT          := github.com/cloudy-sky-software/pulumi-xyz
-NODE_MODULE_NAME := @cloudyskysoftware/pulumi-xyz
-NUGET_PKG_NAME   := Pulumi.Xyz
+PROJECT          := github.com/pulumiverse/pulumi-forgejo
+NODE_MODULE_NAME := @pulumiverse/pulumi-forgejo
+NUGET_PKG_NAME   := Pulumi.Forgejo
 
 PROVIDER        := pulumi-resource-${PACK}
 CODEGEN         := pulumi-gen-${PACK}
@@ -14,7 +14,7 @@ VERSION         ?= $(shell pulumictl get version)
 PROVIDER_PATH   := provider
 VERSION_PATH     := ${PROVIDER_PATH}/pkg/version.Version
 
-SCHEMA_FILE     := provider/cmd/pulumi-resource-xyz/schema.json
+SCHEMA_FILE     := provider/cmd/pulumi-resource-forgejo/schema.json
 GOPATH			:= $(shell go env GOPATH)
 
 WORKING_DIR     := $(shell pwd)

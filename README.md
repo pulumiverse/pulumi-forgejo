@@ -22,7 +22,7 @@ to [Terraform-based providers](https://github.com/pulumi/pulumi-tf-provider-boil
 
 ## Authoring a Pulumi Native Provider
 
-This boilerplate creates a working Pulumi-owned provider named `xyz`.
+This boilerplate creates a working Pulumi-owned provider named `forgejo`.
 
 ### Prerequisites
 
@@ -43,10 +43,10 @@ Pulumi offers this repository as a [GitHub template repository](https://docs.git
 1. Click "Use this template".
 1. Set the following options:
    - Owner: `<your GH organization>`
-   - Repository name: pulumi-xyz (replace "xyz" with the name of your provider)
+   - Repository name: pulumi-forgejo (replace "forgejo" with the name of your provider)
      - Providers built from Cloudy Sky Software's templates are _always_ native providers, by default.
      - However, if there is already a TF-bridged provider with that name, you should add the suffix `-native` so that the package name in some package registries do not conflict with the other providers.
-   - Description: Pulumi provider for xyz
+   - Description: Pulumi provider for forgejo
    - Repository type: Public
 1. Clone the generated repository.
 
@@ -56,10 +56,10 @@ Search-replace the following occurrences with the corresponding names.
 
 | Search | Replace With                                                                   |
 | ------ | ------------------------------------------------------------------------------ |
-| xyz    | Lower-cased name of the provider                                               |
-| Xyz    | Pascal-case name of the provider                                               |
-| XYZ    | Upper-cased name of the provider                                               |
-| x_y_z  | Lower snake-cased name of the provider if the provider name has multiple words |
+| forgejo    | Lower-cased name of the provider                                               |
+| Forgejo    | Pascal-case name of the provider                                               |
+| FORGEJO    | Upper-cased name of the provider                                               |
+| forgejo  | Lower snake-cased name of the provider if the provider name has multiple words |
 
 #### Build the provider and install the plugin
 
@@ -78,7 +78,7 @@ This will:
 
 ```bash
 $ cd examples/simple
-$ yarn link @pulumi/xyz
+$ yarn link @pulumi/forgejo
 $ yarn install
 $ pulumi stack init test
 $ pulumi up
@@ -92,12 +92,12 @@ You now have:
 
 1. A `provider/` folder containing the building and implementation logic
    1. `cmd/`
-      1. `pulumi-gen-xyz/` - generates language SDKs from the schema
-      2. `pulumi-resource-xyz/` - holds the package schema, injects the package version, and starts the gRPC server
+      1. `pulumi-gen-forgejo/` - generates language SDKs from the schema
+      2. `pulumi-resource-forgejo/` - holds the package schema, injects the package version, and starts the gRPC server
    2. `pkg`
       1. `provider` - holds the gRPC methods (and for now, the sample implementation logic) required by the Pulumi engine
       2. `version` - semver package to be consumed by build processes
-3. `sdk` - holds the generated code libraries created by `pulumi-gen-xyz/main.go`
+3. `sdk` - holds the generated code libraries created by `pulumi-gen-forgejo/main.go`
 4. `examples` a folder of Pulumi programs to try locally and/or use in CI.
 5. A `Makefile` and this `README`.
 
