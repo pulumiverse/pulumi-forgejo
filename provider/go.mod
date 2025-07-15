@@ -1,4 +1,4 @@
-module github.com/cloudy-sky-software/pulumi-forgejo/provider
+module github.com/pulumiverse/pulumi-forgejo/provider
 
 go 1.23.0
 
