@@ -1,6 +1,6 @@
 PROJECT_NAME := Pulumi Forgejo Resource Provider
 
-SHELL = /bin/bash
+SHELL = /usr/bin/env bash
 
 PACK             := forgejo
 PACKDIR          := sdk
