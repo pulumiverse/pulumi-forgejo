@@ -5,8 +5,8 @@ package main
 import (
 	_ "embed"
 
-	"github.com/cloudy-sky-software/pulumi-forgejo/provider/pkg/provider"
-	"github.com/cloudy-sky-software/pulumi-forgejo/provider/pkg/version"
+	"github.com/pulumiverse/pulumi-forgejo/provider/pkg/provider"
+	"github.com/pulumiverse/pulumi-forgejo/provider/pkg/version"
 )
 
 var providerName = "forgejo"

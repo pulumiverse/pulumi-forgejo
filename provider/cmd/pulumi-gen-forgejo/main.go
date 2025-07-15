@@ -4,7 +4,6 @@ package main
 
 import (
 	_ "embed"
-
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -13,8 +12,8 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	providerSchemaGen "github.com/cloudy-sky-software/pulumi-forgejo/provider/pkg/gen"
-	providerVersion "github.com/cloudy-sky-software/pulumi-forgejo/provider/pkg/version"
+	providerSchemaGen "github.com/pulumiverse/pulumi-forgejo/provider/pkg/gen"
+	providerVersion "github.com/pulumiverse/pulumi-forgejo/provider/pkg/version"
 
 	"github.com/cloudy-sky-software/pulumi-provider-framework/openapi"
 
@@ -54,7 +53,12 @@ func main() {
 	}
 
 	var version string
-	flag.StringVar(&version, "version", providerVersion.Version, "the provider version to record in the generated code")
+	flag.StringVar(
+		&version,
+		"version",
+		providerVersion.Version,
+		"the provider version to record in the generated code",
+	)
 
 	flag.Parse()
 	args := flag.Args()

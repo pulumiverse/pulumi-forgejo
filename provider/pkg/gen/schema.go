@@ -14,13 +14,15 @@ import (
 
 	openapigen "github.com/cloudy-sky-software/pulschema/pkg"
 
-	"github.com/cloudy-sky-software/pulumi-forgejo/provider/pkg/gen/examples"
+	"github.com/pulumiverse/pulumi-forgejo/provider/pkg/gen/examples"
 )
 
 const packageName = "forgejo"
 
 // PulumiSchema will generate a Pulumi schema for the given k8s schema.
-func PulumiSchema(openapiDoc openapi3.T) (pschema.PackageSpec, openapigen.ProviderMetadata, openapi3.T) {
+func PulumiSchema(
+	openapiDoc openapi3.T,
+) (pschema.PackageSpec, openapigen.ProviderMetadata, openapi3.T) {
 	pkg := pschema.PackageSpec{
 		Name:        packageName,
 		Description: "A Pulumi package for creating and managing Forgejo resources.",
@@ -32,9 +34,9 @@ func PulumiSchema(openapiDoc openapi3.T) (pschema.PackageSpec, openapigen.Provid
 			"category/cloud",
 			"kind/native",
 		},
-		Homepage:   "https://cloudysky.software",
-		Publisher:  "Cloudy Sky Software",
-		Repository: "https://github.com/cloudy-sky-software/pulumi-forgejo",
+		Homepage:   "https://pulumi.com",
+		Publisher:  "Pulumiverse",
+		Repository: "https://github.com/pulumiverse/pulumi-forgejo",
 
 		Config: pschema.ConfigSpec{
 			Variables: map[string]pschema.PropertySpec{
@@ -75,7 +77,7 @@ func PulumiSchema(openapiDoc openapi3.T) (pschema.PackageSpec, openapigen.Provid
 			},
 		},
 
-		PluginDownloadURL: "github://api.github.com/cloudy-sky-software/pulumi-forgejo",
+		PluginDownloadURL: "github://api.github.com/pulumiverse/pulumi-forgejo",
 		Types:             map[string]pschema.ComplexTypeSpec{},
 		Resources:         map[string]pschema.ResourceSpec{},
 		Functions:         map[string]pschema.FunctionSpec{},
@@ -118,7 +120,7 @@ func PulumiSchema(openapiDoc openapi3.T) (pschema.PackageSpec, openapigen.Provid
 	})
 
 	pkg.Language["go"] = rawMessage(map[string]interface{}{
-		"importBasePath": "github.com/cloudy-sky-software/pulumi-forgejo/sdk/go/forgejo",
+		"importBasePath": "github.com/pulumiverse/pulumi-forgejo/sdk/go/forgejo",
 	})
 	pkg.Language["nodejs"] = rawMessage(map[string]interface{}{
 		"packageName": "@cloudyskysoftware/pulumi-forgejo",
