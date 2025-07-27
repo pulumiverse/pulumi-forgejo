@@ -1,13 +1,13 @@
 module github.com/pulumiverse/pulumi-forgejo/provider
 
-go 1.23.1
+go 1.23.11
 
 toolchain go1.24.4
 
 require (
 	github.com/getkin/kin-openapi v0.132.0
-	github.com/pulumi/pulumi/pkg/v3 v3.182.0
-	github.com/pulumi/pulumi/sdk/v3 v3.182.0
+	github.com/pulumi/pulumi/pkg/v3 v3.186.0
+	github.com/pulumi/pulumi/sdk/v3 v3.186.0
 )
 
 require github.com/stretchr/testify v1.10.0
