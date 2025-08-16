@@ -1,19 +1,19 @@
 module github.com/pulumiverse/pulumi-forgejo/provider
 
-go 1.23.1
+go 1.23.11
 
 toolchain go1.24.4
 
 require (
 	github.com/getkin/kin-openapi v0.132.0
-	github.com/pulumi/pulumi/pkg/v3 v3.182.0
-	github.com/pulumi/pulumi/sdk/v3 v3.182.0
+	github.com/pulumi/pulumi/pkg/v3 v3.190.0
+	github.com/pulumi/pulumi/sdk/v3 v3.190.0
 )
 
 require github.com/stretchr/testify v1.10.0
 
 require (
-	github.com/cloudy-sky-software/pulschema v0.0.0-20250714185602-89f64df89d2d
+	github.com/cloudy-sky-software/pulschema v0.0.0-20250815233523-ca4984a2f530
 	github.com/cloudy-sky-software/pulumi-provider-framework v0.0.0-20241018225636-248eda3b93e8
 	github.com/pkg/errors v0.9.1
 	gopkg.in/yaml.v3 v3.0.1
@@ -86,7 +86,7 @@ require (
 	github.com/pkg/term v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/pulumi/appdash v0.0.0-20231130102222-75f619a67231 // indirect
-	github.com/pulumi/esc v0.14.3 // indirect
+	github.com/pulumi/esc v0.17.0 // indirect
 	github.com/pulumi/inflector v0.1.1 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rogpeppe/go-internal v1.13.1 // indirect
