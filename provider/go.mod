@@ -2,7 +2,7 @@ module github.com/pulumiverse/pulumi-forgejo/provider
 
 go 1.23.1
 
-toolchain go1.24.4
+toolchain go1.25.1
 
 require (
 	github.com/getkin/kin-openapi v0.132.0
