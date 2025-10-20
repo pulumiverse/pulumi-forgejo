@@ -5,11 +5,13 @@ info:
   license:
     name: This file is distributed under the MIT license for the purpose of interoperability
     url: http://opensource.org/licenses/MIT
-  version: 12.0.0-dev-517-fc726fae9f+gitea-1.22.0
+  version: 13.0.1+gitea-1.22.0
 servers:
 - url: /api/v1
 security:
 - BasicAuth: []
+- Token: []
+- AccessToken: []
 - AuthorizationHeaderToken: []
 - SudoParam: []
 - SudoHeader: []
@@ -46,6 +48,7 @@ paths:
         required: true
         schema:
           type: integer
+          format: int64
       responses:
         "200":
           $ref: '#/components/responses/ActivityPub'
@@ -62,6 +65,7 @@ paths:
         required: true
         schema:
           type: integer
+          format: int64
       requestBody:
         content:
           application/json:
@@ -88,6 +92,51 @@ paths:
         required: true
         schema:
           type: integer
+          format: int64
+      responses:
+        "200":
+          $ref: '#/components/responses/ActivityPub'
+  /activitypub/user-id/{user-id}/activities/{activity-id}:
+    get:
+      tags:
+      - activitypub
+      summary: Get a specific activity object of the user
+      operationId: activitypubPersonActivityNote
+      parameters:
+      - name: user-id
+        in: path
+        description: user ID of the user
+        required: true
+        schema:
+          type: integer
+      - name: activity-id
+        in: path
+        description: activity ID of the sought activity
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          $ref: '#/components/responses/ActivityPub'
+  /activitypub/user-id/{user-id}/activities/{activity-id}/activity:
+    get:
+      tags:
+      - activitypub
+      summary: Get a specific activity of the user
+      operationId: activitypubPersonActivity
+      parameters:
+      - name: user-id
+        in: path
+        description: user ID of the user
+        required: true
+        schema:
+          type: integer
+      - name: activity-id
+        in: path
+        description: activity ID of the sought activity
+        required: true
+        schema:
+          type: integer
       responses:
         "200":
           $ref: '#/components/responses/ActivityPub'
@@ -104,9 +153,28 @@ paths:
         required: true
         schema:
           type: integer
+          format: int64
       responses:
-        "204":
+        "202":
           $ref: '#/components/responses/empty'
+  /activitypub/user-id/{user-id}/outbox:
+    get:
+      tags:
+      - activitypub
+      summary: List the user's recorded activity
+      operationId: activitypubPersonFeed
+      parameters:
+      - name: user-id
+        in: path
+        description: user ID of the user
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          $ref: '#/components/responses/PersonFeed'
+        "403":
+          $ref: '#/components/responses/forbidden'
   /admin/cron:
     get:
       tags:
@@ -151,7 +219,7 @@ paths:
     get:
       tags:
       - admin
-      summary: List all emails
+      summary: List all users' email addresses
       operationId: adminGetAllEmails
       parameters:
       - name: page
@@ -173,7 +241,7 @@ paths:
     get:
       tags:
       - admin
-      summary: Search all emails
+      summary: Search users' email addresses
       operationId: adminSearchEmails
       parameters:
       - name: q
@@ -200,7 +268,7 @@ paths:
     get:
       tags:
       - admin
-      summary: List system's webhooks
+      summary: List global (system) webhooks
       operationId: adminListHooks
       parameters:
       - name: page
@@ -794,7 +862,7 @@ paths:
     post:
       tags:
       - admin
-      summary: Create a user
+      summary: Create a user account
       operationId: adminCreateUser
       requestBody:
         content:
@@ -816,7 +884,7 @@ paths:
     delete:
       tags:
       - admin
-      summary: Delete a user
+      summary: Delete user account
       operationId: adminDeleteUser
       parameters:
       - name: username
@@ -871,7 +939,7 @@ paths:
     post:
       tags:
       - admin
-      summary: Add a public key on behalf of a user
+      summary: Add an SSH public key to user's account
       operationId: adminCreatePublicKey
       parameters:
       - name: username
@@ -898,7 +966,7 @@ paths:
     delete:
       tags:
       - admin
-      summary: Delete a user's public key
+      summary: Remove a public key from user's account
       operationId: adminDeleteUserPublicKey
       parameters:
       - name: username
@@ -1297,7 +1365,7 @@ paths:
         description: "If true, mark all notifications on this repo. Default value\
           \ is false"
         schema:
-          type: string
+          type: boolean
       - name: status-types
         in: query
         description: "Mark notifications with the provided status types. Options are:\
@@ -1337,7 +1405,8 @@ paths:
         description: id of notification thread
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
       responses:
         "200":
           $ref: '#/components/responses/NotificationThread'
@@ -1356,7 +1425,8 @@ paths:
         description: id of notification thread
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
       - name: to-status
         in: query
         description: Status to mark notifications as
@@ -1404,7 +1474,7 @@ paths:
     get:
       tags:
       - organization
-      summary: Get list of organizations
+      summary: List all organizations
       operationId: orgGetAll
       parameters:
       - name: page
@@ -1543,7 +1613,7 @@ paths:
     get:
       tags:
       - organization
-      summary: List an organization's actions secrets
+      summary: List actions secrets of an organization
       operationId: orgListActionsSecrets
       parameters:
       - name: org
@@ -1634,7 +1704,7 @@ paths:
     get:
       tags:
       - organization
-      summary: Get an org-level variables list
+      summary: List variables of an organization
       operationId: getOrgVariablesList
       parameters:
       - name: org
@@ -1664,7 +1734,7 @@ paths:
     get:
       tags:
       - organization
-      summary: Get an org-level variable
+      summary: Get organization's variable by name
       operationId: getOrgVariable
       parameters:
       - name: org
@@ -1689,7 +1759,7 @@ paths:
     put:
       tags:
       - organization
-      summary: Update an org-level variable
+      summary: Update variable in organization
       operationId: updateOrgVariable
       parameters:
       - name: org
@@ -1725,7 +1795,7 @@ paths:
     post:
       tags:
       - organization
-      summary: Create an org-level variable
+      summary: Create a new variable in organization
       operationId: createOrgVariable
       parameters:
       - name: org
@@ -1761,7 +1831,7 @@ paths:
     delete:
       tags:
       - organization
-      summary: Delete an org-level variable
+      summary: Delete organization's variable by name
       operationId: deleteOrgVariable
       parameters:
       - name: org
@@ -1777,11 +1847,6 @@ paths:
         schema:
           type: string
       responses:
-        "200":
-          $ref: '#/components/responses/ActionVariable'
-        "201":
-          description: response when deleting a variable
-          content: {}
         "204":
           description: response when deleting a variable
           content: {}
@@ -1827,7 +1892,7 @@ paths:
     post:
       tags:
       - organization
-      summary: Update Avatar
+      summary: Update an organization's avatar
       operationId: orgUpdateAvatar
       parameters:
       - name: org
@@ -1854,7 +1919,7 @@ paths:
     delete:
       tags:
       - organization
-      summary: Delete Avatar
+      summary: Delete an organization's avatar. It will be replaced by a default one
       operationId: orgDeleteAvatar
       parameters:
       - name: org
@@ -2039,6 +2104,15 @@ paths:
         required: true
         schema:
           type: string
+      - name: sort
+        in: query
+        description: "Specifies the sorting method: mostissues, leastissues, or reversealphabetically."
+        schema:
+          type: string
+          enum:
+          - mostissues
+          - leastissues
+          - reversealphabetically
       - name: page
         in: query
         description: page number of results to return (1-based)
@@ -2467,9 +2541,19 @@ paths:
         required: true
         schema:
           type: string
+      - name: subject
+        in: query
+        description: subject of the quota
+        required: true
+        schema:
+          type: string
       responses:
         "200":
-          $ref: '#/components/responses/boolean'
+          description: Returns true if the action is accepted.
+          content:
+            application/json:
+              schema:
+                type: boolean
         "403":
           $ref: '#/components/responses/forbidden'
         "404":
@@ -2685,6 +2769,7 @@ paths:
           content:
             application/json:
               schema:
+                title: TeamSearchResults
                 type: object
                 properties:
                   data:
@@ -3069,6 +3154,22 @@ paths:
         schema:
           minimum: 0
           type: integer
+      - name: sort
+        in: query
+        description: Type of sort
+        schema:
+          type: string
+          default: latest
+          enum:
+          - relevance
+          - latest
+          - oldest
+          - recentupdate
+          - leastupdate
+          - mostcomment
+          - leastcomment
+          - nearduedate
+          - farduedate
       responses:
         "200":
           $ref: '#/components/responses/IssueList'
@@ -3189,12 +3290,25 @@ paths:
           , \"forks\" and \"id\". Default is \"alpha\""
         schema:
           type: string
+          enum:
+          - alpha
+          - created
+          - updated
+          - size
+          - git_size
+          - lfs_size
+          - id
+          - stars
+          - forks
       - name: order
         in: query
         description: "sort order, either \"asc\" (ascending) or \"desc\" (descending).\
           \ Default is \"asc\", ignored if \"sort\" is not specified."
         schema:
           type: string
+          enum:
+          - asc
+          - desc
       - name: page
         in: query
         description: page number of results to return (1-based)
@@ -3795,11 +3909,6 @@ paths:
         schema:
           type: string
       responses:
-        "200":
-          $ref: '#/components/responses/ActionVariable'
-        "201":
-          description: response when deleting a variable
-          content: {}
         "204":
           description: response when deleting a variable
           content: {}
@@ -3807,7 +3916,7 @@ paths:
           $ref: '#/components/responses/error'
         "404":
           $ref: '#/components/responses/notFound'
-  /repos/{owner}/{repo}/actions/workflows/{workflowname}/dispatches:
+  /repos/{owner}/{repo}/actions/workflows/{workflowfilename}/dispatches:
     post:
       tags:
       - repository
@@ -3826,7 +3935,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: workflowname
+      - name: workflowfilename
         in: path
         description: name of the workflow
         required: true
@@ -3946,7 +4055,7 @@ paths:
     post:
       tags:
       - repository
-      summary: Update avatar
+      summary: Update a repository's avatar
       operationId: repoUpdateAvatar
       parameters:
       - name: owner
@@ -3979,7 +4088,7 @@ paths:
     delete:
       tags:
       - repository
-      summary: Delete avatar
+      summary: Delete a repository's avatar
       operationId: repoDeleteAvatar
       parameters:
       - name: owner
@@ -4986,6 +5095,34 @@ paths:
         "423":
           $ref: '#/components/responses/repoArchivedError'
       x-codegen-request-body-name: body
+  /repos/{owner}/{repo}/convert:
+    post:
+      tags:
+      - repository
+      summary: Convert a mirror repo to a normal repo.
+      operationId: repoConvert
+      parameters:
+      - name: owner
+        in: path
+        description: owner of the repo to convert
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: name of the repo to convert
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          $ref: '#/components/responses/Repository'
+        "403":
+          $ref: '#/components/responses/forbidden'
+        "404":
+          $ref: '#/components/responses/notFound'
+        "422":
+          $ref: '#/components/responses/validationError'
   /repos/{owner}/{repo}/diffpatch:
     post:
       tags:
@@ -5054,8 +5191,13 @@ paths:
           type: string
       responses:
         "200":
-          description: success
-          content: {}
+          description: definitions
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
         "404":
           $ref: '#/components/responses/notFound'
   /repos/{owner}/{repo}/flags:
@@ -7136,7 +7278,8 @@ paths:
         description: index of the issue
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
       - name: page
         in: query
         description: page number of results to return (1-based)
@@ -7175,7 +7318,8 @@ paths:
         description: index of the issue
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
       requestBody:
         content:
           application/json:
@@ -7215,7 +7359,8 @@ paths:
         description: index of the issue
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
       requestBody:
         content:
           application/json:
@@ -7479,7 +7624,8 @@ paths:
         description: index of the issue
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
       - name: page
         in: query
         description: page number of results to return (1-based)
@@ -7518,7 +7664,8 @@ paths:
         description: index of the issue
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
       requestBody:
         content:
           application/json:
@@ -7560,7 +7707,8 @@ paths:
         description: index of the issue
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
       requestBody:
         content:
           application/json:
@@ -7729,7 +7877,7 @@ paths:
         "404":
           $ref: '#/components/responses/notFound'
       x-codegen-request-body-name: body
-  /repos/{owner}/{repo}/issues/{index}/labels/{id}:
+  /repos/{owner}/{repo}/issues/{index}/labels/{identifier}:
     delete:
       tags:
       - issue
@@ -7755,13 +7903,12 @@ paths:
         schema:
           type: integer
           format: int64
-      - name: id
+      - name: identifier
         in: path
-        description: id of the label to remove
+        description: name or id of the label to remove
         required: true
         schema:
-          type: integer
-          format: int64
+          type: string
       requestBody:
         content:
           application/json:
@@ -8673,6 +8820,15 @@ paths:
         required: true
         schema:
           type: string
+      - name: sort
+        in: query
+        description: "Specifies the sorting method: mostissues, leastissues, or reversealphabetically."
+        schema:
+          type: string
+          enum:
+          - mostissues
+          - leastissues
+          - reversealphabetically
       - name: page
         in: query
         description: page number of results to return (1-based)
@@ -8985,7 +9141,8 @@ paths:
           \ by name"
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
       responses:
         "200":
           $ref: '#/components/responses/Milestone'
@@ -9015,7 +9172,8 @@ paths:
           \ by name"
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
       responses:
         "204":
           $ref: '#/components/responses/empty'
@@ -9045,7 +9203,8 @@ paths:
           \ by name"
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
       requestBody:
         content:
           application/json:
@@ -9210,7 +9369,7 @@ paths:
         description: "If true, mark all notifications on this repo. Default value\
           \ is false"
         schema:
-          type: string
+          type: boolean
       - name: status-types
         in: query
         description: "Mark notifications with the provided status types. Options are:\
@@ -9769,7 +9928,7 @@ paths:
     post:
       tags:
       - repository
-      summary: create review requests for a pull request
+      summary: Create review requests for a pull request
       operationId: repoCreatePullReviewRequests
       parameters:
       - name: owner
@@ -9811,7 +9970,7 @@ paths:
     delete:
       tags:
       - repository
-      summary: cancel review requests for a pull request
+      summary: Cancel review requests for a pull request
       operationId: repoDeletePullReviewRequests
       parameters:
       - name: owner
@@ -10423,7 +10582,7 @@ paths:
     post:
       tags:
       - repository
-      summary: add a push mirror to the repository
+      summary: Set up a new push mirror in a repository
       operationId: repoAddPushMirror
       parameters:
       - name: owner
@@ -10523,7 +10682,7 @@ paths:
     delete:
       tags:
       - repository
-      summary: deletes a push mirror from a repository by remoteName
+      summary: Remove a push mirror from a repository by remoteName
       operationId: repoDeletePushMirror
       parameters:
       - name: owner
@@ -11573,6 +11732,7 @@ paths:
         required: true
         schema:
           type: integer
+          format: int64
       responses:
         "200":
           $ref: '#/components/responses/TagProtection'
@@ -11602,6 +11762,7 @@ paths:
         required: true
         schema:
           type: integer
+          format: int64
       responses:
         "204":
           $ref: '#/components/responses/empty'
@@ -11632,6 +11793,7 @@ paths:
         required: true
         schema:
           type: integer
+          format: int64
       requestBody:
         content:
           application/json:
@@ -12621,6 +12783,7 @@ paths:
         required: true
         schema:
           type: integer
+          format: int64
       requestBody:
         content:
           application/json:
@@ -12900,12 +13063,12 @@ paths:
     get:
       tags:
       - repository
-      summary: search topics via keyword
+      summary: Search for topics by keyword
       operationId: topicSearch
       parameters:
       - name: q
         in: query
-        description: keywords to search
+        description: keyword to search for
         required: true
         schema:
           type: string
@@ -12921,7 +13084,17 @@ paths:
           type: integer
       responses:
         "200":
-          $ref: '#/components/responses/TopicListResponse'
+          description: SearchResults of a successful search
+          content:
+            application/json:
+              schema:
+                title: TopicSearchResults
+                type: object
+                properties:
+                  topics:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TopicResponse'
         "403":
           $ref: '#/components/responses/forbidden'
         "404":
@@ -13204,7 +13377,7 @@ paths:
     post:
       tags:
       - user
-      summary: creates a new OAuth2 application
+      summary: Creates a new OAuth2 application
       operationId: userCreateOAuth2Application
       requestBody:
         content:
@@ -13229,7 +13402,7 @@ paths:
     get:
       tags:
       - user
-      summary: get an OAuth2 Application
+      summary: Get an OAuth2 application
       operationId: userGetOAuth2Application
       parameters:
       - name: id
@@ -13251,7 +13424,7 @@ paths:
     delete:
       tags:
       - user
-      summary: delete an OAuth2 Application
+      summary: Delete an OAuth2 application
       operationId: userDeleteOAuth2Application
       parameters:
       - name: id
@@ -13273,7 +13446,7 @@ paths:
     patch:
       tags:
       - user
-      summary: "update an OAuth2 Application, this includes regenerating the client\
+      summary: "Update an OAuth2 application, this includes regenerating the client\
         \ secret"
       operationId: userUpdateOAuth2Application
       parameters:
@@ -13307,7 +13480,7 @@ paths:
     post:
       tags:
       - user
-      summary: Update Avatar
+      summary: Update avatar of the current user
       operationId: userUpdateAvatar
       requestBody:
         content:
@@ -13329,7 +13502,8 @@ paths:
     delete:
       tags:
       - user
-      summary: Delete Avatar
+      summary: Delete avatar of the current user. It will be replaced by a default
+        one
       operationId: userDeleteAvatar
       responses:
         "204":
@@ -13342,7 +13516,7 @@ paths:
     put:
       tags:
       - user
-      summary: Blocks a user from the doer.
+      summary: Blocks a user from the doer
       operationId: userBlockUser
       parameters:
       - name: username
@@ -13366,7 +13540,7 @@ paths:
     get:
       tags:
       - user
-      summary: List the authenticated user's email addresses
+      summary: List all email addresses of the current user
       operationId: userListEmails
       responses:
         "200":
@@ -13378,7 +13552,7 @@ paths:
     post:
       tags:
       - user
-      summary: Add email addresses
+      summary: Add an email addresses to the current user's account
       operationId: userAddEmail
       requestBody:
         content:
@@ -13402,7 +13576,7 @@ paths:
     delete:
       tags:
       - user
-      summary: Delete email addresses
+      summary: Delete email addresses from the current user's account
       operationId: userDeleteEmail
       requestBody:
         content:
@@ -13556,6 +13730,12 @@ paths:
       - user
       summary: Verify a GPG key
       operationId: userVerifyGPGKey
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyGPGKeyOption'
+        required: false
       responses:
         "201":
           $ref: '#/components/responses/GPGKey'
@@ -13567,6 +13747,7 @@ paths:
           $ref: '#/components/responses/notFound'
         "422":
           $ref: '#/components/responses/validationError'
+      x-codegen-request-body-name: body
   /user/gpg_keys:
     get:
       tags:
@@ -13594,7 +13775,7 @@ paths:
     post:
       tags:
       - user
-      summary: Create a GPG key
+      summary: Add a GPG public key to current user's account
       operationId: userCurrentPostGPGKey
       requestBody:
         content:
@@ -13640,7 +13821,7 @@ paths:
     delete:
       tags:
       - user
-      summary: Remove a GPG key
+      summary: Remove a GPG public key from current user's account
       operationId: userCurrentDeleteGPGKey
       parameters:
       - name: id
@@ -13982,9 +14163,20 @@ paths:
       - user
       summary: Check if the authenticated user is over quota for a given subject
       operationId: userCheckQuota
+      parameters:
+      - name: subject
+        in: query
+        description: subject of the quota
+        required: true
+        schema:
+          type: string
       responses:
         "200":
-          $ref: '#/components/responses/boolean'
+          description: Returns true if the action is accepted.
+          content:
+            application/json:
+              schema:
+                type: boolean
         "401":
           $ref: '#/components/responses/unauthorized'
         "403":
@@ -14098,7 +14290,7 @@ paths:
     get:
       tags:
       - user
-      summary: Get user settings
+      summary: Get current user's account settings
       operationId: getUserSettings
       responses:
         "200":
@@ -14110,7 +14302,7 @@ paths:
     patch:
       tags:
       - user
-      summary: Update user settings
+      summary: Update settings in current user's account
       operationId: updateUserSettings
       requestBody:
         content:
@@ -14349,7 +14541,7 @@ paths:
     put:
       tags:
       - user
-      summary: Unblocks a user from the doer.
+      summary: Unblocks a user from the doer
       operationId: userUnblockUser
       parameters:
       - name: username
@@ -14387,6 +14579,18 @@ paths:
         schema:
           type: integer
           format: int64
+      - name: sort
+        in: query
+        description: sort order of results
+        schema:
+          type: string
+          enum:
+          - oldest
+          - newest
+          - alphabetically
+          - reversealphabetically
+          - recentupdate
+          - leastupdate
       - name: page
         in: query
         description: page number of results to return (1-based)
@@ -14403,6 +14607,7 @@ paths:
           content:
             application/json:
               schema:
+                title: UserSearchResults
                 type: object
                 properties:
                   data:
@@ -14798,7 +15003,7 @@ paths:
     post:
       tags:
       - user
-      summary: Create an access token
+      summary: Generate an access token for the current user
       operationId: userCreateToken
       parameters:
       - name: username
@@ -14827,7 +15032,7 @@ paths:
     delete:
       tags:
       - user
-      summary: delete an access token
+      summary: Delete an access token from current user's account
       operationId: userDeleteAccessToken
       parameters:
       - name: username
@@ -14951,6 +15156,22 @@ components:
           type: string
           x-go-name: URL
       x-go-package: forgejo.org/services/context
+    APPersonFollowItem:
+      type: object
+      properties:
+        actor_id:
+          type: string
+          x-go-name: ActorID
+        note:
+          type: string
+          x-go-name: Note
+        original_item:
+          type: string
+          x-go-name: OriginalItem
+        original_url:
+          type: string
+          x-go-name: OriginalURL
+      x-go-package: forgejo.org/modules/structs
     AccessToken:
       title: AccessToken represents an API access token.
       type: object
@@ -16501,6 +16722,9 @@ components:
         of a repository.
       type: object
       properties:
+        branch_filter:
+          type: string
+          x-go-name: BranchFilter
         interval:
           type: string
           x-go-name: Interval
@@ -19519,6 +19743,9 @@ components:
     PushMirror:
       type: object
       properties:
+        branch_filter:
+          type: string
+          x-go-name: BranchFilter
         created:
           type: string
           format: date-time
@@ -19812,6 +20039,15 @@ components:
           type: string
           x-go-name: URL
       x-go-package: forgejo.org/modules/structs
+    RegistrationToken:
+      type: object
+      properties:
+        token:
+          type: string
+          x-go-name: Token
+      description: RegistrationToken is a string used to register a runner with a
+        server
+      x-go-package: forgejo.org/routers/api/v1/shared
     Release:
       type: object
       properties:
@@ -20897,6 +21133,20 @@ components:
           x-go-name: Website
       description: UserSettingsOptions represents options to change user settings
       x-go-package: forgejo.org/modules/structs
+    VerifyGPGKeyOption:
+      required:
+      - key_id
+      type: object
+      properties:
+        armored_signature:
+          type: string
+          x-go-name: Signature
+        key_id:
+          type: string
+          description: An Signature for a GPG key token
+          x-go-name: KeyID
+      description: VerifyGPGKeyOption options verifies user GPG key
+      x-go-package: forgejo.org/modules/structs
     WatchInfo:
       type: object
       properties:
@@ -21879,6 +22129,19 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Package'
+    PersonFeed:
+      description: Personfeed
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/APPersonFollowItem'
+        text/html:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/APPersonFollowItem'
     PublicKey:
       description: PublicKey
       content:
@@ -22112,11 +22375,13 @@ components:
     RegistrationToken:
       description: RegistrationToken is a string used to register a runner with a
         server
-      headers:
-        token:
+      content:
+        application/json:
           schema:
-            type: string
-      content: {}
+            $ref: '#/components/schemas/RegistrationToken'
+        text/html:
+          schema:
+            $ref: '#/components/schemas/RegistrationToken'
     Release:
       description: Release
       content:
@@ -22290,14 +22555,10 @@ components:
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/SyncForkInfo'
+            $ref: '#/components/schemas/SyncForkInfo'
         text/html:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/SyncForkInfo'
+            $ref: '#/components/schemas/SyncForkInfo'
     Tag:
       description: Tag
       content:
@@ -22646,6 +22907,12 @@ components:
           schema:
             $ref: '#/components/schemas/APIValidationError'
   securitySchemes:
+    AccessToken:
+      type: apiKey
+      description: This authentication option is deprecated for removal in Forgejo
+        v13.0.0. Please use AuthorizationHeaderToken instead.
+      name: access_token
+      in: query
     AuthorizationHeaderToken:
       type: apiKey
       description: API tokens must be prepended with "token" followed by a space.
@@ -22672,4 +22939,10 @@ components:
         is enabled.
       name: X-FORGEJO-OTP
       in: header
+    Token:
+      type: apiKey
+      description: This authentication option is deprecated for removal in Forgejo
+        v13.0.0. Please use AuthorizationHeaderToken instead.
+      name: token
+      in: query
 x-original-swagger-version: "2.0"
