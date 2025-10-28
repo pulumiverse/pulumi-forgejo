@@ -16970,17 +16970,10 @@ components:
           type: object
           additionalProperties:
             type: string
-          example:
-            repo.actions: admin
-            repo.packages: none
-            repo.code: read
-            repo.issues: write
-            repo.ext_issues: none
-            repo.wiki: admin
-            repo.pulls: owner
-            repo.releases: none
-            repo.projects: none
-            repo.ext_wiki: none
+          example: "{\"repo.actions\",\"repo.packages\",\"repo.code\":\"read\",\"\
+            repo.issues\":\"write\",\"repo.ext_issues\":\"none\",\"repo.wiki\":\"\
+            admin\",\"repo.pulls\":\"owner\",\"repo.releases\":\"none\",\"repo.projects\"\
+            :\"none\",\"repo.ext_wiki\":\"none\"}"
           x-go-name: UnitsMap
       description: CreateTeamOption options for creating a team
       x-go-package: forgejo.org/modules/structs

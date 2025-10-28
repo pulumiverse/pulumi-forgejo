@@ -33,5 +33,10 @@ Checking the generated file:
 go run github.com/getkin/kin-openapi/cmd/validate@latest -- ./provider/cmd/pulumi-gen-forgejo/openapi.yml
 ```
 
+# TODO
 
+Currently the `openapi.yml` file has been manually corrected. I'm waiting for either:
+- Writing a fix in `provider/pkg/gen/openapi_fixes.go`
+- The upstream bug to get fixed.
 
+The upstream file is called `openapi-upstream.yml`, the (manually) fixed one is called `openapi.yml`.
