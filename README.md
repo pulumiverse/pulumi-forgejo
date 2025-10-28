@@ -24,5 +24,14 @@ ForgeJo spec: https://code.forgejo.org/swagger.v1.json
 Swagger provide a tool to convert swagger to openapi specs. To generate `openapi.yml` from the published swagger spec:
 
 ```bash
-curl "https://converter.swagger.io/api/convert?url=https://code.forgejo.org/swagger.v1.json" -H "Accept: application/yaml" -o ./provider/pulumi-gen-forgejo/openapi.yml
+curl "https://converter.swagger.io/api/convert?url=https://code.forgejo.org/swagger.v1.json" -H "Accept: application/yaml" -o ./provider/cmd/pulumi-gen-forgejo/openapi.yml
 ```
+
+Checking the generated file:
+
+```bash
+go run github.com/getkin/kin-openapi/cmd/validate@latest -- ./provider/cmd/pulumi-gen-forgejo/openapi.yml
+```
+
+
+
