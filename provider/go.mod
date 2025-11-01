@@ -13,7 +13,7 @@ require (
 require github.com/stretchr/testify v1.11.1
 
 require (
-	github.com/cloudy-sky-software/pulschema v0.0.0-20251006213115-83eb15583132
+	github.com/cloudy-sky-software/pulschema 4e5451921efe
 	github.com/cloudy-sky-software/pulumi-provider-framework v0.0.0-20251008200554-ee1e0fc63642
 	github.com/pkg/errors v0.9.1
 	gopkg.in/yaml.v3 v3.0.1
