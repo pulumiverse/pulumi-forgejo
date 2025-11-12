@@ -7,7 +7,7 @@ toolchain go1.24.4
 require (
 	github.com/getkin/kin-openapi v0.133.0
 	github.com/pulumi/pulumi/pkg/v3 v3.204.0
-	github.com/pulumi/pulumi/sdk/v3 v3.204.0
+	github.com/pulumi/pulumi/sdk/v3 v3.207.0
 )
 
 require github.com/stretchr/testify v1.11.1
